@@ -118,6 +118,76 @@ function logout() {
   localStorage.removeItem('loggedInUser');
   window.location.href = "login.html";
 }
+// Exibe ou oculta o menu dropdown da foto de perfil
+function toggleDropdown() {
+  const dropdown = document.getElementById('dropdownMenu');
+  if (dropdown.style.display === 'flex') {
+    dropdown.style.display = 'none';
+  } else {
+    dropdown.style.display = 'flex';
+    dropdown.style.flexDirection = 'column';
+  }
+}
+
+// Função de login com validação simples e simulação de autenticação
+function login() {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const message = document.getElementById('login-message');
+
+  if (!username || !password) {
+    message.textContent = 'Por favor, preencha todos os campos.';
+    message.style.color = 'red';
+    return;
+  }
+
+  // Busca usuários cadastrados no localStorage
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+
+  // Tenta encontrar o usuário
+  const user = users.find(u => u.username === username && u.password === password);
+
+  if (user) {
+    message.textContent = 'Login realizado com sucesso! Redirecionando...';
+    message.style.color = 'green';
+
+    // Salva info do usuário logado no sessionStorage
+    sessionStorage.setItem('loggedUser', JSON.stringify(user));
+
+    // Mostra navbar personalizada (profileMenu)
+    showProfileMenu();
+
+    setTimeout(() => {
+      // Redirecionar para página inicial (ou painel)
+      window.location.href = 'index.html';
+    }, 1500);
+  } else {
+    message.textContent = 'Usuário ou senha inválidos.';
+    message.style.color = 'red';
+  }
+}
+
+// Exibe o menu com a foto do perfil e oculta os botões login/cadastro
+function showProfileMenu() {
+  const profileMenu = document.getElementById('profileMenu');
+  const navLinks = document.querySelector('.nav-links');
+  profileMenu.style.display = 'block';
+  navLinks.style.display = 'none';
+}
+
+// Função de logout, limpa sessionStorage e recarrega página
+function logout() {
+  sessionStorage.removeItem('loggedUser');
+  window.location.href = 'login.html';
+}
+
+// Ao carregar a página, verifica se tem usuário logado
+window.onload = function () {
+  const loggedUser = sessionStorage.getItem('loggedUser');
+  if (loggedUser) {
+    showProfileMenu();
+  }
+};
 
 // Mostrar nome do usuário logado
 function showUserProfile() {

@@ -2,49 +2,51 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login - Dicionário Wai Wai</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="login-body">
+ <script src="script.js"></script>
+<body>
 
-  <!-- Navbar -->
   <header>
     <nav class="navbar">
       <h1>Dicionário Wai Wai</h1>
       <ul class="nav-links">
-        <li><button onclick="showSection('home')">Início</button></li>
-        <li><button onclick="showSection('register')">Cadastro</button></li>
-        <li><button onclick="showSection('login')">Login</button></li>
+        <li><button onclick="window.location.href='index.html'">Início</button></li>
+        <li><button onclick="window.location.href='register.html'">Cadastro</button></li>
+        <li><button onclick="window.location.href='login.html'">Login</button></li>
       </ul>
-      <div class="profile-menu" id="profileMenu" style="display: none;">
+
+      <div class="profile-menu" id="profileMenu" style="display:none;">
         <img src="profile.png" alt="Perfil" class="profile-pic" onclick="toggleDropdown()" />
         <ul class="dropdown" id="dropdownMenu">
-          <li><button onclick="showSection('translate')">Traduzir</button></li>
-          <li><button onclick="showSection('suggest')">Sugerir</button></li>
-          <li><button onclick="showSection('contact')">Contato</button></li>
+          <li><button onclick="window.location.href='translate.html'">Traduzir</button></li>
+          <li><button onclick="window.location.href='suggest.html'">Sugerir</button></li>
+          <li><button onclick="window.location.href='contact.html'">Contato</button></li>
           <li><button onclick="logout()">Logout</button></li>
         </ul>
       </div>
     </nav>
   </header>
 
-  <!-- Login Section -->
   <main class="login-container">
     <div class="login-box">
-      <h2>Entrar</h2>
+      <h2>Login</h2>
       <input type="text" id="username" placeholder="Usuário" />
       <input type="password" id="password" placeholder="Senha" />
       <button onclick="login()">Entrar</button>
       <p id="login-message" class="login-message"></p>
+      <p>Não tem conta? <a href="cadastro.html">Cadastre-se</a></p>
+      <p>Esqueceu a senha? <a href="nova-senha.html">Trocar Senha</a></p>
     </div>
   </main>
 
-  <!-- Rodapé -->
   <footer class="footer">
     <p>&copy; 2025 Dicionário Acadêmico Wai Wai. Todos os direitos reservados.</p>
   </footer>
 
-  <script src="script.js"></script>
+ 
+
 </body>
 </html>
