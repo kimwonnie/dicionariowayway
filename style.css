@@ -68,7 +68,7 @@ body, html {
   position: absolute;
   right: 0;
   top: 50px;
-  background: #4a0d6a;
+  background: #a78db4;
   border-radius: 8px;
   display: none;
   flex-direction: column;
@@ -91,7 +91,7 @@ body, html {
 }
 
 .dropdown li button:hover {
-  background-color: #732f8a;
+  background-color: #ad86b9;
 }
 
 /* Login */
@@ -115,7 +115,7 @@ body, html {
 .login-box h2 {
   margin-bottom: 20px;
   font-size: 1.8rem;
-  color: #6a0dad;
+  color: #e1ceee;
 }
 
 .login-box input {
@@ -162,7 +162,7 @@ body, html {
 
 /* Footer */
 .footer {
-  background: linear-gradient(to right, #6a1b9a, #8e24aa);
+  background: linear-gradient(to right, #6a1b9a, #a08ca5);
   color: white;
   text-align: center;
   padding: 1rem;
