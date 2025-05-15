@@ -6,7 +6,6 @@
   <title>Login - Dicionário Wai Wai</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
- <script src="script.js"></script>
 <body>
 
   <header>
@@ -18,7 +17,8 @@
         <li><button onclick="window.location.href='login.html'">Login</button></li>
       </ul>
 
-      <div class="profile-menu" id="profileMenu" style="display:none;">
+      <!-- Menu do perfil com dropdown -->
+      <div class="profile-menu" id="profileMenu" style="display: none;">
         <img src="profile.png" alt="Perfil" class="profile-pic" onclick="toggleDropdown()" />
         <ul class="dropdown" id="dropdownMenu">
           <li><button onclick="window.location.href='translate.html'">Traduzir</button></li>
@@ -36,7 +36,9 @@
       <input type="text" id="username" placeholder="Usuário" />
       <input type="password" id="password" placeholder="Senha" />
       <button onclick="login()">Entrar</button>
+
       <p id="login-message" class="login-message"></p>
+
       <p>Não tem conta? <a href="cadastro.html">Cadastre-se</a></p>
       <p>Esqueceu a senha? <a href="nova-senha.html">Trocar Senha</a></p>
     </div>
@@ -46,7 +48,8 @@
     <p>&copy; 2025 Dicionário Acadêmico Wai Wai. Todos os direitos reservados.</p>
   </footer>
 
- 
+  <!-- Script JS no final para melhorar o carregamento -->
+  <script src="script.js"></script>
 
 </body>
 </html>

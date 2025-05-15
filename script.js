@@ -1,4 +1,4 @@
-// Alternar entre seções na mesma página (index.html)
+// Alternar entre seções na mesma página
 function showSection(sectionId) {
   const sections = document.querySelectorAll('.section');
   sections.forEach(section => section.style.display = 'none');
@@ -15,7 +15,6 @@ function translate() {
     return;
   }
 
-  // Tradução simulada
   const dummyTranslations = {
     "universidade": "wai-universi",
     "livro": "wai-libru",
@@ -41,7 +40,7 @@ function submitSuggestion() {
   document.getElementById('suggestWai').value = "";
 }
 
-// Cadastro
+// Cadastro de usuário
 function registerUser() {
   const name = document.getElementById('registerName').value.trim();
   const email = document.getElementById('registerEmail').value.trim();
@@ -52,156 +51,81 @@ function registerUser() {
     return;
   }
 
-  localStorage.setItem(email, JSON.stringify({ name, password }));
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
+  // Verifica se já existe usuário com o mesmo email
+  if (users.some(u => u.email === email)) {
+    alert("Este email já está cadastrado.");
+    return;
+  }
+
+  users.push({ name, email, password });
+  localStorage.setItem('users', JSON.stringify(users));
   alert("Cadastro realizado com sucesso!");
   window.location.href = "login.html";
 }
 
-// Login
+// Login de usuário
 function loginUser() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value.trim();
+  const message = document.getElementById('login-message');
 
-  const user = JSON.parse(localStorage.getItem(email));
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  const user = users.find(u => u.email === email && u.password === password);
 
-  if (!user || user.password !== password) {
-    alert("Email ou senha incorretos.");
+  if (!user) {
+    message.textContent = "Email ou senha incorretos.";
+    message.style.color = 'red';
     return;
   }
 
-  alert("Login realizado com sucesso!");
-  localStorage.setItem("loggedUser", email);
-  window.location.href = "perfil.html";
+  sessionStorage.setItem('loggedUser', JSON.stringify(user));
+  message.textContent = "Login realizado com sucesso! Redirecionando...";
+  message.style.color = 'green';
+
+  setTimeout(() => {
+    window.location.href = 'index.html';
+  }, 1500);
 }
 
-const users = [
-  { username: 'professor', password: '1234', role: 'linguista' },
-  { username: 'aluno', password: 'abcd', role: 'estudante' }
-];
-
-function toggleDropdown() {
-  const menu = document.getElementById('dropdownMenu');
-  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-}
-
-function login() {
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const message = document.getElementById('login-message');
-
-  const users = [
-    { username: 'professor', password: '1234', role: 'linguista' },
-    { username: 'aluno', password: 'abcd', role: 'estudante' }
-  ];
-
-  const user = users.find(u => u.username === username && u.password === password);
-
-  if (user) {
-    localStorage.setItem('loggedInUser', JSON.stringify(user));
-    message.textContent = 'Login realizado com sucesso!';
-    message.style.color = 'green';
-
-    // Atualiza a navbar para exibir o menu de perfil
-    document.querySelector('.nav-links').style.display = 'none';
-    document.getElementById('profileMenu').style.display = 'flex';
-
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 1000);
-  } else {
-    message.textContent = 'Usuário ou senha inválidos.';
-    message.style.color = 'red';
-  }
-}
-
-function logout() {
-  localStorage.removeItem('loggedInUser');
-  window.location.href = "login.html";
-}
-// Exibe ou oculta o menu dropdown da foto de perfil
+// Exibir menu do perfil
 function toggleDropdown() {
   const dropdown = document.getElementById('dropdownMenu');
-  if (dropdown.style.display === 'flex') {
-    dropdown.style.display = 'none';
-  } else {
-    dropdown.style.display = 'flex';
-    dropdown.style.flexDirection = 'column';
-  }
+  dropdown.style.display = (dropdown.style.display === 'flex') ? 'none' : 'flex';
+  dropdown.style.flexDirection = 'column';
 }
 
-// Função de login com validação simples e simulação de autenticação
-function login() {
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-  const message = document.getElementById('login-message');
-
-  if (!username || !password) {
-    message.textContent = 'Por favor, preencha todos os campos.';
-    message.style.color = 'red';
-    return;
-  }
-
-  // Busca usuários cadastrados no localStorage
-  let users = JSON.parse(localStorage.getItem('users')) || [];
-
-  // Tenta encontrar o usuário
-  const user = users.find(u => u.username === username && u.password === password);
-
-  if (user) {
-    message.textContent = 'Login realizado com sucesso! Redirecionando...';
-    message.style.color = 'green';
-
-    // Salva info do usuário logado no sessionStorage
-    sessionStorage.setItem('loggedUser', JSON.stringify(user));
-
-    // Mostra navbar personalizada (profileMenu)
-    showProfileMenu();
-
-    setTimeout(() => {
-      // Redirecionar para página inicial (ou painel)
-      window.location.href = 'index.html';
-    }, 1500);
-  } else {
-    message.textContent = 'Usuário ou senha inválidos.';
-    message.style.color = 'red';
-  }
-}
-
-// Exibe o menu com a foto do perfil e oculta os botões login/cadastro
+// Exibir menu personalizado se estiver logado
 function showProfileMenu() {
   const profileMenu = document.getElementById('profileMenu');
   const navLinks = document.querySelector('.nav-links');
-  profileMenu.style.display = 'block';
-  navLinks.style.display = 'none';
+  if (profileMenu && navLinks) {
+    profileMenu.style.display = 'flex';
+    navLinks.style.display = 'none';
+  }
 }
 
-// Função de logout, limpa sessionStorage e recarrega página
+// Mostrar informações do usuário no perfil
+function showUserProfile() {
+  const loggedUser = sessionStorage.getItem('loggedUser');
+  if (loggedUser) {
+    const user = JSON.parse(loggedUser);
+    document.getElementById("profileName").textContent = user.name;
+    document.getElementById("profileEmail").textContent = user.email;
+  }
+}
+
+// Logout
 function logout() {
   sessionStorage.removeItem('loggedUser');
   window.location.href = 'login.html';
 }
 
-// Ao carregar a página, verifica se tem usuário logado
+// Ao carregar a página, verifica se o usuário está logado
 window.onload = function () {
   const loggedUser = sessionStorage.getItem('loggedUser');
   if (loggedUser) {
     showProfileMenu();
   }
 };
-
-// Mostrar nome do usuário logado
-function showUserProfile() {
-  const email = localStorage.getItem("loggedUser");
-  const user = JSON.parse(localStorage.getItem(email));
-
-  if (user) {
-    document.getElementById("profileName").textContent = user.name;
-    document.getElementById("profileEmail").textContent = email;
-  }
-}
-
-// Logout
-function logout() {
-  localStorage.removeItem("loggedUser");
-  window.location.href = "index.html";
-}
