@@ -93,6 +93,45 @@ body, html {
 .dropdown li button:hover {
   background-color: #ad86b9;
 }
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-container img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: white;
+  border: 1px solid #ccc;
+  width: 150px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+  border-radius: 8px;
+}
+
+.dropdown-content a {
+  padding: 10px;
+  display: block;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown-content a:hover {
+  background-color: #eee;
+}
+
+.show {
+  display: block;
+}
 
 /* Login */
 .login-container {

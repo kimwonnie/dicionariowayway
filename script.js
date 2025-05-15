@@ -91,9 +91,21 @@ function loginUser() {
 
 // Exibir menu do perfil
 function toggleDropdown() {
-  const dropdown = document.getElementById('dropdownMenu');
-  dropdown.style.display = (dropdown.style.display === 'flex') ? 'none' : 'flex';
-  dropdown.style.flexDirection = 'column';
+  const dropdown = document.getElementById("dropdownMenu");
+  dropdown.classList.toggle("show");
+}
+
+// Fecha o menu se clicar fora dele
+window.onclick = function(event) {
+  if (!event.target.matches('#profileIcon')) {
+    const dropdowns = document.getElementsByClassName("dropdown-content");
+    for (let i = 0; i < dropdowns.length; i++) {
+      const openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
 }
 
 // Exibir menu personalizado se estiver logado
