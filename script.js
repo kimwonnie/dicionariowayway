@@ -74,6 +74,33 @@ function loginUser() {
   window.location.href = "perfil.html";
 }
 
+const users = [
+  { username: 'professor', password: '1234', role: 'linguista' },
+  { username: 'aluno', password: 'abcd', role: 'estudante' }
+];
+
+function login() {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const message = document.getElementById('login-message');
+
+  const user = users.find(u => u.username === username && u.password === password);
+
+  if (user) {
+    localStorage.setItem('loggedInUser', JSON.stringify(user));
+    message.textContent = 'Login realizado com sucesso!';
+    message.style.color = 'green';
+
+    // Redireciona para a tela principal ou perfil após login
+    setTimeout(() => {
+      showSection('home');
+    }, 1000);
+  } else {
+    message.textContent = 'Usuário ou senha inválidos.';
+    message.style.color = 'red';
+  }
+}
+
 // Mostrar nome do usuário logado
 function showUserProfile() {
   const email = localStorage.getItem("loggedUser");
