@@ -79,10 +79,20 @@ const users = [
   { username: 'aluno', password: 'abcd', role: 'estudante' }
 ];
 
+function toggleDropdown() {
+  const menu = document.getElementById('dropdownMenu');
+  menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
 function login() {
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value.trim();
   const message = document.getElementById('login-message');
+
+  const users = [
+    { username: 'professor', password: '1234', role: 'linguista' },
+    { username: 'aluno', password: 'abcd', role: 'estudante' }
+  ];
 
   const user = users.find(u => u.username === username && u.password === password);
 
@@ -91,14 +101,22 @@ function login() {
     message.textContent = 'Login realizado com sucesso!';
     message.style.color = 'green';
 
-    // Redireciona para a tela principal ou perfil após login
+    // Atualiza a navbar para exibir o menu de perfil
+    document.querySelector('.nav-links').style.display = 'none';
+    document.getElementById('profileMenu').style.display = 'flex';
+
     setTimeout(() => {
-      showSection('home');
+      window.location.href = "index.html";
     }, 1000);
   } else {
     message.textContent = 'Usuário ou senha inválidos.';
     message.style.color = 'red';
   }
+}
+
+function logout() {
+  localStorage.removeItem('loggedInUser');
+  window.location.href = "login.html";
 }
 
 // Mostrar nome do usuário logado
