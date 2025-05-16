@@ -11,7 +11,54 @@ body, html {
   background: linear-gradient(135deg, #6a0dad, #a349a4, #d3a3d8);
   color: #333;
 }
+/* Container para centralização */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+  text-align: center;
+}
 
+/* Seção principal */
+.section {
+  max-width: 900px;
+  width: 100%;
+  padding: 40px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+button, a.button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button:hover, a.button:hover {
+  background-color: #0056b3;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #222;
+  color: white;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
 /* Navbar */
 .navbar {
   display: flex;
