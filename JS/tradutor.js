@@ -1,34 +1,64 @@
-// Traduzir termo
-function translate() {
-  const input = document.getElementById('translateInput').value.trim();
-  const resultDiv = document.getElementById('translationResult');
+// Obter elementos uma vez
+const inputTranslate = document.getElementById('translateInput');
+const resultDiv = document.getElementById('translationResult');
 
-  if (!input) {
-    alert("Digite uma palavra para traduzir.");
+const inputSuggestPt = document.getElementById('suggestPt');
+const inputSuggestWai = document.getElementById('suggestWai');
+
+// Dicionário de traduções dummy
+const dummyTranslations = {
+  "universidade": "wai-universi",
+  "livro": "wai-libru",
+  "aula": "wai-aura"
+};
+
+// Função para traduzir termo
+function translateTerm() {
+  if (!inputTranslate) return;
+
+  const word = inputTranslate.value.trim().toLowerCase();
+
+  if (!word) {
+    showTranslationMessage("Digite uma palavra para traduzir.", true);
     return;
   }
 
-  const dummyTranslations = {
-    "universidade": "wai-universi",
-    "livro": "wai-libru",
-    "aula": "wai-aura"
-  };
-
-  const translation = dummyTranslations[input.toLowerCase()] || "Tradução não encontrada.";
+  const translation = dummyTranslations[word] || "Tradução não encontrada.";
   resultDiv.textContent = translation;
 }
 
-// Sugerir novo termo
+// Função para mostrar mensagens de tradução (erro ou sucesso)
+function showTranslationMessage(message, isError = false) {
+  if (!resultDiv) return;
+  resultDiv.textContent = message;
+  resultDiv.style.color = isError ? 'red' : 'black';
+}
+
+// Função para enviar sugestão
 function submitSuggestion() {
-  const pt = document.getElementById('suggestPt').value.trim();
-  const wai = document.getElementById('suggestWai').value.trim();
+  if (!inputSuggestPt || !inputSuggestWai) return;
+
+  const pt = inputSuggestPt.value.trim();
+  const wai = inputSuggestWai.value.trim();
 
   if (!pt || !wai) {
     alert("Preencha os dois campos.");
     return;
   }
 
+  // Aqui pode ser melhorado para salvar sugestões localmente ou enviar para backend
   alert("Sugestão enviada com sucesso!");
-  document.getElementById('suggestPt').value = "";
-  document.getElementById('suggestWai').value = "";
+
+  // Limpar campos após envio
+  inputSuggestPt.value = "";
+  inputSuggestWai.value = "";
 }
+
+// Opcional: Adicionar event listeners para UX melhor
+document.addEventListener('DOMContentLoaded', () => {
+  if (inputTranslate) {
+    inputTranslate.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') translateTerm();
+    });
+  }
+});

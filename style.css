@@ -334,3 +334,11 @@ button:hover, a.button:hover {
     color: #e1bfff;
   }
 }
+.hidden {
+  display: none !important;
+  /* Se quiser uma animação suave, pode adicionar transições */
+  /* Exemplo:
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  */
+}
