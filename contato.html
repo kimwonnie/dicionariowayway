@@ -2,11 +2,10 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contato | Dicionário Wai Wai</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-<script src="script.js"></script>
 <body>
   <header>
     <nav class="navbar">
@@ -33,18 +32,23 @@
   <main class="section">
     <h2>Contatos e Aplicativo</h2>
     <p>Siga-nos nas redes sociais:</p>
-    <ul class="social-links">
-      <li><a href="#">Instagram</a></li>
-      <li><a href="#">Facebook</a></li>
-      <li><a href="#">YouTube</a></li>
+    <ul class="social-links" style="list-style:none; display:flex; gap:15px; padding-left:0;">
+      <li><a href="#" aria-label="Instagram" target="_blank" rel="noopener noreferrer">📸 Instagram</a></li>
+      <li><a href="#" aria-label="Facebook" target="_blank" rel="noopener noreferrer">📘 Facebook</a></li>
+      <li><a href="#" aria-label="YouTube" target="_blank" rel="noopener noreferrer">▶️ YouTube</a></li>
     </ul>
+
     <p>Baixe o aplicativo:</p>
-    <button>Google Play</button>
-    <button>App Store</button>
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <a href="#" class="button" aria-label="Baixar no Google Play" target="_blank" rel="noopener noreferrer">Google Play</a>
+      <a href="#" class="button" aria-label="Baixar na App Store" target="_blank" rel="noopener noreferrer">App Store</a>
+    </div>
   </main>
 
   <footer class="footer">
     <p>&copy; 2025 Dicionário Acadêmico Wai Wai. Todos os direitos reservados.</p>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>

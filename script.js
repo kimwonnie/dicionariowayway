@@ -2,15 +2,19 @@
 function showSection(sectionId) {
   const sections = document.querySelectorAll('.section');
   sections.forEach(section => section.style.display = 'none');
-  document.getElementById(sectionId).style.display = 'block';
+  const target = document.getElementById(sectionId);
+  if (target) target.style.display = 'block';
 }
 
 // Simulação de tradução
 function translate() {
-  const input = document.getElementById('translateInput').value.trim();
+  const input = document.getElementById('translateInput');
   const resultDiv = document.getElementById('translationResult');
+  if (!input || !resultDiv) return;
 
-  if (input === "") {
+  const word = input.value.trim().toLowerCase();
+  if (!word) {
+    resultDiv.textContent = "";
     alert("Digite uma palavra para traduzir.");
     return;
   }
@@ -21,14 +25,17 @@ function translate() {
     "aula": "wai-aura"
   };
 
-  const translation = dummyTranslations[input.toLowerCase()] || "Tradução não encontrada.";
-  resultDiv.textContent = translation;
+  resultDiv.textContent = dummyTranslations[word] || "Tradução não encontrada.";
 }
 
 // Sugestão de novo termo
 function submitSuggestion() {
-  const pt = document.getElementById('suggestPt').value.trim();
-  const wai = document.getElementById('suggestWai').value.trim();
+  const ptInput = document.getElementById('suggestPt');
+  const waiInput = document.getElementById('suggestWai');
+  if (!ptInput || !waiInput) return;
+
+  const pt = ptInput.value.trim();
+  const wai = waiInput.value.trim();
 
   if (!pt || !wai) {
     alert("Preencha os dois campos.");
@@ -36,75 +43,125 @@ function submitSuggestion() {
   }
 
   alert("Sugestão enviada com sucesso!");
-  document.getElementById('suggestPt').value = "";
-  document.getElementById('suggestWai').value = "";
+  ptInput.value = "";
+  waiInput.value = "";
 }
 
 // Cadastro de usuário
 function registerUser() {
-  const name = document.getElementById('registerName').value.trim();
-  const email = document.getElementById('registerEmail').value.trim();
-  const password = document.getElementById('registerPassword').value.trim();
+  const name = document.getElementById('registerName')?.value.trim();
+  const email = document.getElementById('registerEmail')?.value.trim();
+  const password = document.getElementById('registerPassword')?.value.trim();
 
   if (!name || !email || !password) {
     alert("Preencha todos os campos.");
     return;
   }
 
-  const users = JSON.parse(localStorage.getItem('users')) || [];
+  try {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    if (users.some(u => u.email === email)) {
+      alert("Este email já está cadastrado.");
+      return;
+    }
 
-  // Verifica se já existe usuário com o mesmo email
-  if (users.some(u => u.email === email)) {
-    alert("Este email já está cadastrado.");
-    return;
+    users.push({ name, email, password });
+    localStorage.setItem('users', JSON.stringify(users));
+    alert("Cadastro realizado com sucesso!");
+    window.location.href = "login.html";
+  } catch (error) {
+    alert("Erro ao acessar o armazenamento local.");
+    console.error(error);
   }
-
-  users.push({ name, email, password });
-  localStorage.setItem('users', JSON.stringify(users));
-  alert("Cadastro realizado com sucesso!");
-  window.location.href = "login.html";
 }
 
 // Login de usuário
 function loginUser() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value.trim();
+  const email = document.getElementById('loginEmail')?.value.trim();
+  const password = document.getElementById('loginPassword')?.value.trim();
   const message = document.getElementById('login-message');
+  if (!email || !password || !message) return;
 
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-  const user = users.find(u => u.email === email && u.password === password);
+  try {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const user = users.find(u => u.email === email && u.password === password);
 
-  if (!user) {
-    message.textContent = "Email ou senha incorretos.";
-    message.style.color = 'red';
-    return;
+    if (!user) {
+      message.textContent = "Email ou senha incorretos.";
+      message.style.color = 'red';
+      return;
+    }
+
+    sessionStorage.setItem('loggedUser', JSON.stringify(user));
+    message.textContent = "Login realizado com sucesso! Redirecionando...";
+    message.style.color = 'green';
+
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1500);
+  } catch (error) {
+    console.error("Erro no login:", error);
   }
-
-  sessionStorage.setItem('loggedUser', JSON.stringify(user));
-  message.textContent = "Login realizado com sucesso! Redirecionando...";
-  message.style.color = 'green';
-
-  setTimeout(() => {
-    window.location.href = 'index.html';
-  }, 1500);
 }
 
-// Exibir menu do perfil
+// Exibir/ocultar menu do perfil (dropdown) com acessibilidade
 function toggleDropdown() {
   const dropdown = document.getElementById("dropdownMenu");
-  dropdown.classList.toggle("show");
+  const profilePic = document.getElementById("profilePic");
+  if (!dropdown || !profilePic) return;
+
+  const isOpen = dropdown.classList.contains("show");
+
+  if (isOpen) {
+    dropdown.classList.remove("show");
+    profilePic.setAttribute("aria-expanded", "false");
+  } else {
+    dropdown.classList.add("show");
+    profilePic.setAttribute("aria-expanded", "true");
+    dropdown.focus();
+  }
 }
 
 // Fecha o menu se clicar fora dele
-window.onclick = function(event) {
-  if (!event.target.matches('#profileIcon')) {
-    const dropdowns = document.getElementsByClassName("dropdown-content");
-    for (let i = 0; i < dropdowns.length; i++) {
-      const openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
+window.addEventListener("click", function(event) {
+  const profileMenu = document.querySelector(".profile-menu");
+  const dropdown = document.getElementById("dropdownMenu");
+  const profilePic = document.getElementById("profilePic");
+  if (!profileMenu || !dropdown || !profilePic) return;
+
+  if (!profileMenu.contains(event.target)) {
+    if (dropdown.classList.contains("show")) {
+      dropdown.classList.remove("show");
+      profilePic.setAttribute("aria-expanded", "false");
     }
+  }
+});
+
+// Navegação no dropdown via teclado e ESC para fechar
+function handleDropdownKey(event) {
+  const dropdown = event.currentTarget;
+  const profilePic = document.getElementById("profilePic");
+  if (!dropdown || !profilePic) return;
+
+  const focusableItems = Array.from(dropdown.querySelectorAll('button[role="menuitem"]'));
+  const currentIndex = focusableItems.indexOf(document.activeElement);
+
+  switch(event.key) {
+    case "Escape":
+      dropdown.classList.remove("show");
+      profilePic.setAttribute("aria-expanded", "false");
+      profilePic.focus();
+      break;
+    case "ArrowDown":
+      event.preventDefault();
+      const nextIndex = (currentIndex + 1) % focusableItems.length;
+      focusableItems[nextIndex].focus();
+      break;
+    case "ArrowUp":
+      event.preventDefault();
+      const prevIndex = (currentIndex - 1 + focusableItems.length) % focusableItems.length;
+      focusableItems[prevIndex].focus();
+      break;
   }
 }
 
@@ -118,26 +175,42 @@ function showProfileMenu() {
   }
 }
 
-// Mostrar informações do usuário no perfil
+// Mostrar dados do usuário no perfil
 function showUserProfile() {
-  const loggedUser = sessionStorage.getItem('loggedUser');
-  if (loggedUser) {
-    const user = JSON.parse(loggedUser);
-    document.getElementById("profileName").textContent = user.name;
-    document.getElementById("profileEmail").textContent = user.email;
+  const user = JSON.parse(sessionStorage.getItem('loggedUser') || '{}');
+  if (user.name && user.email) {
+    const nameElem = document.getElementById("profileName");
+    const emailElem = document.getElementById("profileEmail");
+    if (nameElem) nameElem.textContent = user.name;
+    if (emailElem) emailElem.textContent = user.email;
   }
 }
 
 // Logout
 function logout() {
   sessionStorage.removeItem('loggedUser');
+
+  const dropdown = document.getElementById("dropdownMenu");
+  const profilePic = document.getElementById("profilePic");
+  if (dropdown?.classList.contains("show")) {
+    dropdown.classList.remove("show");
+    if (profilePic) profilePic.setAttribute("aria-expanded", "false");
+  }
+
   window.location.href = 'login.html';
 }
 
-// Ao carregar a página, verifica se o usuário está logado
-window.onload = function () {
+// Verifica login ao carregar página
+document.addEventListener('DOMContentLoaded', () => {
   const loggedUser = sessionStorage.getItem('loggedUser');
   if (loggedUser) {
     showProfileMenu();
+    showUserProfile();
   }
-};
+
+  // Adiciona listener de teclado para o dropdown se existir
+  const dropdown = document.getElementById("dropdownMenu");
+  if (dropdown) {
+    dropdown.addEventListener("keydown", handleDropdownKey);
+  }
+});

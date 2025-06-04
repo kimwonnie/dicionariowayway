@@ -1,19 +1,24 @@
-<!-- Perfil -->
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head><meta charset="UTF-8" /><title>Perfil</title><link rel="stylesheet" href="style.css" /></head>
-<script src="script.js"></script>
-<script src="js/auth.js"></script>
-
+<head>
+  <meta charset="UTF-8" />
+  <title>Perfil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
 <body>
+
   <header>
-     <nav class="navbar">
+    <nav class="navbar">
       <h1>Dicionário Wai Wai</h1>
       <ul class="nav-links">
         <li><button onclick="window.location.href='index.html'">Início</button></li>
         <li><button onclick="window.location.href='cadastro.html'">Cadastro</button></li>
         <li><button onclick="window.location.href='login.html'">Login</button></li>
       </ul>
+
+      <!-- Botão de Modo Escuro -->
+      <button id="darkModeToggle">🌙</button>
 
       <!-- Menu do perfil com dropdown -->
       <div class="profile-menu" id="profileMenu" style="display: none;">
@@ -27,12 +32,32 @@
       </div>
     </nav>
   </header>
+
   <main class="section">
     <h2>Perfil do Usuário</h2>
-    <p>Nome: Professor Wai Wai</p>
-    <p>Email: exemplo@waiwai.org</p>
-    <button>Editar Perfil</button>
+    <p><strong>Nome:</strong> <span id="profileName">...</span></p>
+    <p><strong>Email:</strong> <span id="profileEmail">...</span></p>
+    <button onclick="alert('Funcionalidade de edição em desenvolvimento.')">Editar Perfil</button>
   </main>
-  <footer class="footer">...</footer>
+
+  <footer class="footer">
+    &copy; 2025 Dicionário Acadêmico Wai Wai. Todos os direitos reservados.
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    window.onload = function () {
+      const loggedUser = sessionStorage.getItem('loggedUser');
+      if (!loggedUser) {
+        alert("Você precisa estar logado para acessar esta página.");
+        window.location.href = 'login.html';
+        return;
+      }
+      showProfileMenu();
+      showUserProfile();
+      setupDarkModeToggle();
+    };
+  </script>
+
 </body>
 </html>
